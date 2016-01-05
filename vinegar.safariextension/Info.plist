@@ -7,11 +7,11 @@
 	<key>Builder Version</key>
 	<string>10600.3.18</string>
 	<key>CFBundleDisplayName</key>
-	<string>vimari</string>
+	<string>vinegar</string>
 	<key>CFBundleExecutable</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.guyht.vimari</string>
+	<string>codes.hao.vinegar</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -58,8 +58,8 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>http://guyht.github.io/vimari/manifest.plist</string>
+	<string>https://raw.githubusercontent.com/hlian/vinegar/master/public/manifest.plist</string>
 	<key>Website</key>
-	<string>http://guyht.github.com/vimari/</string>
+	<string>https://github.com/hlian/vinegar</string>
 </dict>
 </plist>
