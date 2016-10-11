@@ -359,10 +359,12 @@ function numberToHintString(number, numHintDigits) {
 }
 
 function simulateClick(link) {
-  // Configure events with appropriate meta key (CMD on Mac, CTRL on windows) 
-  // to open links in new tabs if necessary.
-  var metaKey = (platform == "Mac" && shouldOpenLinkHintInNewTab);
-  var ctrlKey = (platform != "Mac" && shouldOpenLinkHintInNewTab);
+  // Configure link to open in new tab if in new tab mode
+  var originalTargetAttribute = link.getAttribute('target');
+
+  if (shouldOpenLinkHintInNewTab) {
+    link.setAttribute('target', '_blank');
+  }
 
   // A full click will be simulated by the sequence:
   // focus --> mouseDown --> mouseUp --> click
@@ -371,19 +373,29 @@ function simulateClick(link) {
   link.focus();
 
   var mouseDownEvent = document.createEvent("MouseEvents");
-  mouseDownEvent.initMouseEvent("mousedown", true, true, window, 1, 0, 0, 0, 0, ctrlKey, false, false, metaKey, 0, null);
+  mouseDownEvent.initMouseEvent("mousedown", true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
   link.dispatchEvent(mouseDownEvent)
 
   var mouseUpEvent = document.createEvent("MouseEvents");
-  mouseUpEvent.initMouseEvent("mouseup", true, true, window, 1, 0, 0, 0, 0, ctrlKey, false, false, metaKey, 0, null);
+  mouseUpEvent.initMouseEvent("mouseup", true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
   link.dispatchEvent(mouseUpEvent);
 
   var clickEvent = document.createEvent("MouseEvents");
-  clickEvent.initMouseEvent("click", true, true, window, 1, 0, 0, 0, 0, ctrlKey, false, false, metaKey, 0, null);
+  clickEvent.initMouseEvent("click", true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
   link.dispatchEvent(clickEvent);
 
   // On click event dispatch, Firefox will not execute the link's default action, but Webkit will. 
   // This is a Safari extension, so that's ok for now, if no easy cross-browser solution is available.
+
+  // Reset target attribute, after the click events have been dispatched
+  setTimeout(function(){
+    if (originalTargetAttribute) {
+      link.setAttribute('target', originalTargetAttribute);
+    } else {
+      link.removeAttribute('target');
+    }
+  }, 1000);
+
 }
 
 function deactivateLinkHintsMode() {
